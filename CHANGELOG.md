@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
 
+## [0.0.7] - 2025-08-21
+
+### Changed
+- Copy logic for team folders now applies to all top-level folders starting with team (e.g., team, teams).
+
 ## [0.0.6] - 2025-08-21
 
 ### Fixed

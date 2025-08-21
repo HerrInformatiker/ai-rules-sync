@@ -2,7 +2,7 @@
     "name": "ai-rules-syncer",
     "displayName": "AI Rules Syncer",
     "description": "Synchronizes your workspace AI rules with a central rule Git repository",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "HerrInformatiker",
     "license": "MIT",
     "repository": {
@@ -64,7 +64,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "markdownDescription": "Team folder name(s). Use the list UI. You can also set a comma-separated string in settings.json, which will be parsed.",
+                    "markdownDescription": "Team subfolder name(s) to include from any top-level folder whose name starts with `team` (e.g., `team`, `teams`). Use the list UI, or set a comma-separated string in settings.json.",
                     "default": [],
                     "maxItems": 10,
                     "scope": "window",

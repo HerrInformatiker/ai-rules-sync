@@ -28,7 +28,7 @@ ai-coding-rules/
 - `/general` - Company-wide rules that always apply, regardless of team
 - `/language` - Language-specific rules (e.g., nodejs, golang) applied via globs to relevant file extensions
 - `/role` - AI roles that can be assumed (e.g., system architect, security expert) - applied manually by users
-- `/team` - Team-specific rules (e.g., algorithm, cloud-infra) - always applied for that team
+- `/team*` - Any top-level folder whose name starts with `team` (e.g., `team`, `teams`) contains team-specific rules; only subfolders matching configured teams are copied
 
 ---
 
@@ -79,8 +79,8 @@ ai-coding-rules/
 1. **Pre-clean** – delete **all** content inside `rulesFolderPath`.
 
 2. **Copy from cached repo**  
-   • For each `teamName` copy `/team/<teamName>/**` (log info level if folder missing).  
-   • Copy **all other top-level folders** (`general`, `language`, `role`, and any future ones) recursively, mirroring the repo.  
+   • For each top-level folder whose name starts with `team` (e.g., `team`, `teams`) and for each configured `teamName`, copy `<teamFolder>/<teamName>/**` (log info level if subfolder is missing).  
+   • Copy **all other top-level folders** (those not starting with `team`, e.g., `general`, `language`, `role`, and any future ones) recursively, mirroring the repo.  
    • Copy **all** files and subfolders.
 
 3. Remove any files in destination that were deleted upstream. Never touch folders not present in the repo (e.g. `project` or personal).

@@ -36,7 +36,7 @@ You can configure or update the extension settings at any time by using:
 | Setting Name | Required | Description | Default |
 |--------------|----------|-------------|---------|
 | `aiRulesSyncer.repoUrl` | **Yes** | Git repository URL (SSH or HTTPS)<br/>Examples:<br/>• `git@github.com:YourOrg/my-ai-rules.git`<br/>• `https://github.com/YourOrg/my-ai-rules.git` | *(empty - you'll be prompted)* |
-| `aiRulesSyncer.teamNames` | No | Team folder name(s) to include from `team/`.<br/>If set, only those subfolders under `team/` are copied (e.g. `team/cloud-infra`).<br/>If empty/omitted, no `team/` subfolders are copied.<br/>Examples:<br/>• Single team: `"cloud-infra"`<br/>• Multiple teams: `["cloud-infra", "blue-team"]` | None |
+| `aiRulesSyncer.teamNames` | No | Team subfolder name(s) to include from any top-level folder whose name starts with `team` (e.g., `team`, `teams`).<br/>If set, only those subfolders are copied (e.g. `team/cloud-infra`, `teams/blue-team`).<br/>If empty/omitted, no team subfolders are copied.<br/>Examples:<br/>• Single team: `"cloud-infra"`<br/>• Multiple teams: `["cloud-infra", "blue-team"]` | None |
 | `aiRulesSyncer.rulesFolderPath` | No | Destination folder for rules | `.cursor/rules/remote` |
 | `aiRulesSyncer.cacheDirPath` | No | Cache directory for storing repository data | Linux: `~/.cache`<br/>macOS: `~/Library/Caches`<br/>Windows: `%LOCALAPPDATA%/ai-coding-rules`<br/>Other: `~/.ai-coding-rules-cache` |
 | `aiRulesSyncer.syncIntervalMinutes` | No | Auto-sync interval in minutes (0 = disabled) | 0 |
@@ -62,7 +62,7 @@ my-ai-rules/
 ├── role/                   # copied recursively
 │   ├── architect.mdc
 │   └── security-expert.mdc
-└── team/
+└── team/                   # any top-level folder starting with "team" behaves the same
     ├── cloud-infra/        # copied recursively (matches configured team)
     │   └── general.mdc
     └── data-science/       # not copied (not in configured teams)
@@ -82,15 +82,15 @@ Which results in the following `<workspace>/.cursor/rules/remote/`:
 ├── role/                   # copied recursively
 │   ├── architect.mdc
 │   └── security-expert.mdc
-└── team/
-    └── cloud-infra/        # only configured team subfolder(s) are copied
+└── team/                   # only configured team subfolder(s) are copied
+    └── cloud-infra/
         └── general.mdc
 ```
 
 ### How copying works
 - **Pre-clean**: Deletes everything inside `rulesFolderPath` on each sync.
-- **All top-level folders (except `team/`)**: Copied entirely, recursively.
-- **`team/` folder**: Only subfolders matching your configured `teamNames` are copied (e.g., `team/cloud-infra`, `team/blue-team`). Others are skipped.
+- **All top-level folders (except ones starting with `team`)**: Copied entirely, recursively.
+- **Folders starting with `team` (e.g., `team`, `teams`)**: Only subfolders matching your configured `teamNames` are copied (e.g., `team/cloud-infra`, `teams/blue-team`). Others are skipped.
 - **Hidden entries**: Folders starting with `.` (e.g., `.git`, `.github`) and top-level files are ignored.
 - **Everything inside copied folders**: All files and subfolders are included.
 

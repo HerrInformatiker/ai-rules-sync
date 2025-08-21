@@ -35,3 +35,10 @@ out/test/**
 
 # Package manager lock file
 package-lock.json
+
+# Local AI rules and environment files (exclude from package)
+.cursor/**
+**/.cursor/**
+
+# Built packages
+*.vsix

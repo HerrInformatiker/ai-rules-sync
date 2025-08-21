@@ -3,8 +3,8 @@
  * Handles copying rule files from Git repository to workspace rules folder,
  * replacing the entire contents of the local rules folder on each sync.
  * Copy logic:
- *   1. Iterate top-level entries in repo. For every directory that is not hidden (name starts with '.'):
- *        • If the directory is 'team', copy only configured team sub-folders.
+ *   1. Iterate top-level entries in repo. For every directory that is not hidden (name starts with '.'): 
+ *        • If the directory name starts with 'team' (e.g., 'team', 'teams'), copy only configured team sub-folders under that directory.
  *        • Otherwise copy the directory recursively in full (all file types).
  *   2. Top-level files (non-directories) are ignored for now (not expected).
  */
@@ -63,10 +63,10 @@ export class FileSyncer {
 
             const sourcePath = path.join(repoPath, entry.name);
 
-            // Handle team directory specially
-            if (entry.name === 'team') {
-                // Ensure destination team folder exists
-                const teamDestRoot = path.join(config.rulesFolderPath, 'team');
+            // Handle any top-level directory whose name starts with 'team' specially
+            if (entry.name.startsWith('team')) {
+                // Ensure destination team-root folder exists (mirrors source name: 'team', 'teams', etc.)
+                const teamDestRoot = path.join(config.rulesFolderPath, entry.name);
                 await fs.mkdir(teamDestRoot, { recursive: true });
 
                 for (const teamName of config.teamNames) {
@@ -74,9 +74,9 @@ export class FileSyncer {
                     if (await this.directoryExists(srcTeamPath)) {
                         const destTeamPath = path.join(teamDestRoot, teamName);
                         await this.copyRecursive(srcTeamPath, destTeamPath);
-                        this.logger.info(`Copied team rules for: ${teamName}`);
+                        this.logger.info(`Copied team rules for: ${teamName} from ${entry.name}/`);
                     } else {
-                        this.logger.info(`Team folder not found: ${teamName} (skipping)`);
+                        this.logger.info(`Team folder not found under ${entry.name}/: ${teamName} (skipping)`);
                     }
                 }
             } else {
