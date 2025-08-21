@@ -1,0 +1,37 @@
+# Source files
+src/**
+.vscode/**
+.vscode-test/**
+
+# Development files
+*.map
+*.ts
+tsconfig.json
+test-integration.js
+scripts/**
+
+dev.code-workspace
+# Documentation (keep README.md but exclude others)
+SPEC.md
+INSTALLATION.md
+
+# Git and CI files
+.git*
+.github/**
+
+# Node modules - exclude dev dependencies but keep runtime deps
+# (vsce automatically handles this for dependencies vs devDependencies)
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiled test output
+out/test/**
+
+# Package manager lock file
+package-lock.json

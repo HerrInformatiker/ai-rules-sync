@@ -1,0 +1,155 @@
+{
+    "name": "ai-rules-syncer",
+    "displayName": "AI Rules Syncer",
+    "description": "Synchronizes your workspace AI rules with a central rule Git repository",
+    "version": "0.0.6",
+    "publisher": "HerrInformatiker",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/HerrInformatiker/ai-rules-sync.git"
+    },
+    "author": "HerrInformatiker",
+    "homepage": "https://github.com/HerrInformatiker/ai-rules-sync",
+    "bugs": {
+        "url": "https://github.com/HerrInformatiker/ai-rules-sync/discussions"
+    },
+    "sponsor": {
+        "url": "https://github.com/sponsors/HerrInformatiker"
+    },
+    "keywords": [
+        "ai",
+        "rules",
+        "sync",
+        "git",
+        "coding-standards",
+        "team",
+        "cursor"
+    ],
+    "icon": "media/icon.png",
+    "galleryBanner": {
+        "color": "#1e1e1e",
+        "theme": "dark"
+    },
+    "engines": {
+        "vscode": "^1.99.0",
+        "node": ">=18"
+    },
+    "categories": [
+        "Other"
+    ],
+    "extensionKind": [
+        "workspace"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "AI Rules Syncer",
+            "properties": {
+                "aiRulesSyncer.repoUrl": {
+                    "type": "string",
+                    "description": "Git repository URL containing AI rules (SSH or HTTPS)",
+                    "maxLength": 512,
+                    "order": 1,
+                    "examples": [
+                        "git@github.com:Org/ai-coding-rules.git",
+                        "https://github.com/Org/ai-coding-rules.git"
+                    ]
+                },
+                "aiRulesSyncer.teamNames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "markdownDescription": "Team folder name(s). Use the list UI. You can also set a comma-separated string in settings.json, which will be parsed.",
+                    "default": [],
+                    "maxItems": 10,
+                    "scope": "window",
+                    "order": 2,
+                    "examples": [
+                        [
+                            "cloud-infra"
+                        ],
+                        [
+                            "cloud-infra",
+                            "blue-team"
+                        ]
+                    ]
+                },
+                "aiRulesSyncer.rulesFolderPath": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "description": "Destination folder for rules inside the workspace (⚠️ contents will be deleted and replaced on each sync)",
+                    "default": ".cursor/rules/remote",
+                    "order": 3
+                },
+                "aiRulesSyncer.cacheDirPath": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "description": "Shared cache directory for repository clones (auto-computed if empty)",
+                    "default": "",
+                    "order": 4
+                },
+                "aiRulesSyncer.syncIntervalMinutes": {
+                    "type": "number",
+                    "description": "Periodic sync interval in minutes (0 = disabled)",
+                    "default": 0,
+                    "minimum": 0,
+                    "order": 6
+                },
+                "aiRulesSyncer.branch": {
+                    "type": "string",
+                    "description": "Git branch to track (uses repository default if empty)",
+                    "default": "",
+                    "scope": "window",
+                    "maxLength": 512,
+                    "order": 5
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "aiRulesSyncer.refreshRules",
+                "title": "Refresh Rules",
+                "category": "AI Rules Syncer"
+            },
+            {
+                "command": "aiRulesSyncer.configure",
+                "title": "Configure AI Rules",
+                "category": "AI Rules Syncer"
+            },
+            {
+                "command": "aiRulesSyncer.openSettings",
+                "title": "Open AI Rules Settings",
+                "category": "AI Rules Syncer"
+            },
+            {
+                "command": "aiRulesSyncer.showConfiguration",
+                "title": "Show Current Configuration",
+                "category": "AI Rules Syncer"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "test": "npm run compile && node -r ./scripts/vscode-shim --test",
+        "package:ovsx": "ovsx package",
+        "publish:ovsx": "ovsx publish -p $OVSX_PAT",
+        "publish:vsce": "vsce publish -p $VSCE_PAT"
+    },
+    "devDependencies": {
+        "@types/node": "^24.2.0",
+        "typescript": "^5.9.2",
+        "@types/vscode": "^1.99.0",
+        "@types/proper-lockfile": "^4.1.4"
+    },
+    "dependencies": {
+        "simple-git": "^3.28.0",
+        "proper-lockfile": "^4.1.2"
+    }
+}
